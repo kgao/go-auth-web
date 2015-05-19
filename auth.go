@@ -6,11 +6,9 @@ import (
     "strings"
 )
 
-type handler func(w http.ResponseWriter, r *http.Request)
 
-func BasicAuth(pass handler) handler {
 
-//func BasicAuth(pass http.HandlerFunc) http.HandlerFunc{
+func BasicAuth(pass http.HandlerFunc) http.HandlerFunc{
 
     return func(w http.ResponseWriter, r *http.Request) {
 

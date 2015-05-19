@@ -1,29 +1,27 @@
 package main
 
-import (
-    "encoding/json"
-    "io"
-    "log"
-    "net/http"
-)
+import "net/http"
 
-func HandleIndex(w http.ResponseWriter, r *http.Request) {
-    io.WriteString(w, "Go: Hello, World!\n")
+type Route struct {
+	Name        string
+	Method      string
+	Pattern     string
+	HandlerFunc http.HandlerFunc
 }
 
-func HandlePost(w http.ResponseWriter, r *http.Request) {
-    r.ParseForm()
-    log.Println(r.PostForm)
-    io.WriteString(w, "post\n")
-}
+type Routes []Route
 
-type Result struct {
-    FirstName string `json:"first"`
-    LastName  string `json:"last"`
-}
-
-func HandleJSON(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Content-Type", "application/json")
-    result, _ := json.Marshal(Result{"tee", "dub"})
-    io.WriteString(w, string(result))
+var routes = Routes{
+	Route{
+		"Index",
+		"GET",
+		"/",
+		Index,
+	},
+  Route{
+    "Hello",
+    "GET",
+    "/hello/{name}",
+    Hello,
+  },
 }
