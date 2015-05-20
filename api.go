@@ -40,9 +40,6 @@ func AuthOnlyPost(w http.ResponseWriter, r *http.Request) {
       http.Error(w, "post only", http.StatusMethodNotAllowed)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Go: Pass auth for "+r.Method+"!\n")
-}
 
 func HandlePost(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
