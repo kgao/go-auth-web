@@ -21,7 +21,19 @@ var routes = Routes{
   Route{
     "Hello",
     "GET",
-    "/hello/{name}",
+    "/hello",
     Hello,
   },
+	Route{
+		"AuthOnlyGet",
+		"GET",
+		"/auth/get",
+		AuthOnlyGet,
+	},
+	Route{
+		"AuthOnlyPost",
+		"POST",
+		"/auth/post",
+		AuthOnlyPost,
+	},
 }

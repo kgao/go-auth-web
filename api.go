@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io"
+  "io"
+  "log"
 	"net/http"
 )
 
@@ -12,24 +13,44 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 
 func Hello(w http.ResponseWriter, r *http.Request) {
-   io.WriteString(w, "Go: Hello, World!\n")
+	if len(r.URL.Query()) > 0 {
+		fmt.Println("got:", r.URL.Query());
+		io.WriteString(w, "Go: Hello, "+r.URL.Query()["user"][0]+"!\n")
+	}else{
+		io.WriteString(w, "Go: Hello! (You can add your name by ?user=<your name>)\n")
+	}
+
 }
 
 //TODO: basic auth
-
-func GetWithAuth(w http.ResponseWriter, r *http.Request) {
+func AuthOnlyGet(w http.ResponseWriter, r *http.Request) {
      if r.Method == "GET" {
-          //handler(w, r)
+					BasicAuth(HandlePost)
           return
       }
       http.Error(w, "get only", http.StatusMethodNotAllowed)
 }
 
 
-func PostWithAuth(w http.ResponseWriter, r *http.Request) {
+func AuthOnlyPost(w http.ResponseWriter, r *http.Request) {
       if r.Method == "POST" {
-          //handler(w, r)
+			  	BasicAuth(HandleGet)
           return
       }
       http.Error(w, "post only", http.StatusMethodNotAllowed)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "Go: Pass auth for "+r.Method+"!\n")
+}
+
+func HandlePost(w http.ResponseWriter, r *http.Request) {
+    r.ParseForm()
+    log.Println(r.PostForm)
+    io.WriteString(w, "post\n")
+}
+
+func HandleGet(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    io.WriteString(w, "Get\n")
 }
