@@ -25,6 +25,12 @@ var routes = Routes{
     Hello,
   },
 	Route{
+		"Hello",
+		"GET",
+		"/boom/test",
+		BoomTest,
+	},
+	Route{
 		"AuthOnlyGet",
 		"GET",
 		"/auth/get",
